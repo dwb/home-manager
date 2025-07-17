@@ -193,9 +193,9 @@ in
                           }
                         }
                         | merge ($env.ENV_CONVERSIONS? | default {})
-                        | get -i ([[value, optional, insensitive]; [$key, false, true]] | into cell-path)
-                        | get -i from_string
-                        | default {|x| $x}
+                        | get ([[value, optional, insensitive]; [$key, true, true]] | into cell-path)
+                        | get from_string?
+                        | if ($in | is-empty) { {|x| $x} } else { $in }
                     ) $value
                     return [ $key $value ]
                 }
